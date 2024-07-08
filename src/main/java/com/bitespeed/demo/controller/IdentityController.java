@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/identity")
@@ -24,14 +22,14 @@ public class IdentityController {
     @PostMapping
     public ResponseEntity<ContactResponse> createContact(@RequestBody ContactRequest req) {
 
-        List<Contact> contacts = identityManager.createContact(req);
+        Set<Contact> contacts = identityManager.createContact(req);
 
         Optional<Contact> primaryContact = contacts.stream().filter(c -> Precedence.PRIMARY.equals(c.getLinkedPrecedence())).findFirst();
 
         Long primaryContactId = null;
-        List<String> emails = new ArrayList<>();
-        List<String> phoneNumbers = new ArrayList<>();
-        List<Long> secondaryContactIds = new ArrayList<>();
+        Set<String> emails = new LinkedHashSet<>();
+        Set<String> phoneNumbers = new LinkedHashSet<>();
+        Set<Long> secondaryContactIds = new LinkedHashSet<>();
 
         if(primaryContact.isPresent()) {
             primaryContactId = primaryContact.get().getId();
@@ -49,7 +47,7 @@ public class IdentityController {
 
         return new ResponseEntity<>(
                 new ContactResponse(primaryContactId, emails, phoneNumbers, secondaryContactIds),
-                HttpStatus.CREATED
+                HttpStatus.OK
         );
     }
 }

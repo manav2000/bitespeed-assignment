@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,9 +15,9 @@ public class ContactResponse {
 
     private long primaryContactId;
 
-    private List<String> emails;
+    private Set<String> emails;
 
-    private List<String> phoneNumbers;
+    private Set<String> phoneNumbers;
 
-    private List<Long> secondaryContactIds;
+    private Set<Long> secondaryContactIds;
 }
